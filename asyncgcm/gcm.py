@@ -169,9 +169,6 @@ class GCM:
 					if resp.status == 500:
 						raise GCMUnavailableException("Service Unavailable")
 
-					else:
-						raise GCMException(resp)
-
 					return resp
 
 			except:
