@@ -113,7 +113,7 @@ class GCM:
 		for k,v in data.items():
 			payload['data.{}'.format(k)] = v
 
-		await self._request(payload)
+		return await self._request(payload)
 
 	async def topic_message(self):
 		"""
@@ -127,7 +127,7 @@ class GCM:
 		"""
 
 		payload = self._prepare_payload(**kwargs)
-		await self._request(json.dumps(kwargs))
+		return await self._request(json.dumps(kwargs))
 
 	@ValidationDecorator
 	def _prepare_payload(**kwargs):
@@ -157,7 +157,7 @@ class GCM:
 		async with ClientSession(headers=self._headers, connector=self.proxy) as session:
 			try:
 				async with session.post(self.url, data=data, headers=headers) as resp:
-					resp = await resp.text()
+					resp_text = await resp.text()
 
 
 					if resp.status == 400:
@@ -169,7 +169,7 @@ class GCM:
 					if resp.status == 500:
 						raise GCMUnavailableException("Service Unavailable")
 
-					return resp
+					return resp_text
 
 			except:
 				raise GCMException(resp)
@@ -177,3 +177,11 @@ class GCM:
 			finally:
 				session.close()
 
+
+loop = asyncio.get_event_loop()
+apikey = 'AIzaSyCihMaggvaQ50fjLa9eJQU8V2HUXi1QIkM'
+reg_id = 'dyD_S1w9mQc:APA91bEVoK_XB-aFZCMoy28_tfzRTiRqwHgQlT1-i7b-ely6T2UgbQvGHFTcX0CAbN-5aSBqOZmqGnoePjpENvbDgueffdZQkUHFaHh2ZodxTcWz6ZAb7RFvU9kSxiPfib4kAdo0MX7T'
+
+gcm = GCM(apikey)
+
+loop.run_until_complete(gcm.json_message(to='cc', data={'msg_type':'new_housemate', 'name':'baris'}))
