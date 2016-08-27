@@ -176,12 +176,3 @@ class GCM:
 
 			finally:
 				session.close()
-
-
-loop = asyncio.get_event_loop()
-apikey = 'AIzaSyCihMaggvaQ50fjLa9eJQU8V2HUXi1QIkM'
-reg_id = 'dyD_S1w9mQc:APA91bEVoK_XB-aFZCMoy28_tfzRTiRqwHgQlT1-i7b-ely6T2UgbQvGHFTcX0CAbN-5aSBqOZmqGnoePjpENvbDgueffdZQkUHFaHh2ZodxTcWz6ZAb7RFvU9kSxiPfib4kAdo0MX7T'
-
-gcm = GCM(apikey)
-
-loop.run_until_complete(gcm.json_message(to='cc', data={'msg_type':'new_housemate', 'name':'baris'}))
